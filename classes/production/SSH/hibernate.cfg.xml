@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://www.hibernate.org/dtd/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+	<session-factory>
+<!-- 	数据库基本配置
+		#hibernate.dialect org.hibernate.dialect.MySQLDialect
+		#hibernate.dialect org.hibernate.dialect.MySQLInnoDBDialect
+		#hibernate.dialect org.hibernate.dialect.MySQLMyISAMDialect
+		#hibernate.connection.driver_class com.mysql.jdbc.Driver
+		#hibernate.connection.url jdbc:mysql:///test
+		#hibernate.connection.username gavin
+		#hibernate.connection.password -->
+		<property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+		<property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+		<property name="hibernate.connection.url">jdbc:mysql:///ssh</property>
+		<property name="hibernate.connection.username">root</property>
+		<property name="hibernate.connection.password">dapeng</property>
+<!-- 	#hibernate.show_sql true
+		#hibernate.format_sql true		-->
+		<property name="hibernate.show_sql">true</property>
+		<property name="hibernate.format_sql">true</property>
+<!-- 	#hibernate.hbm2ddl.auto create-drop
+		#hibernate.hbm2ddl.auto create
+		#hibernate.hbm2ddl.auto update
+		#hibernate.hbm2ddl.auto validate -->
+		<property name="hibernate.hbm2ddl.auto">update</property>
+		<!-- 隔离级别 -->
+		<property name="hibernate.connection.isolation">4</property>
+		<!-- 设置同一线程事务 -->
+		<property name="hibernate.current_session_context_class">thread</property>
+		<mapping resource="com/dapeng/domain/Customer.hbm.xml"/>
+		<mapping resource="com/dapeng/domain/LinkMan.hbm.xml"/>
+		<mapping resource="com/dapeng/domain/User.hbm.xml"/>
+	</session-factory>
+</hibernate-configuration>

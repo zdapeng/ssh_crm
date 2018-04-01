@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:context="http://www.springframework.org/schema/context" 
+		xmlns:aop="http://www.springframework.org/schema/aop" 
+		xmlns:tx="http://www.springframework.org/schema/tx" 
+		xsi:schemaLocation="http://www.springframework.org/schema/beans 
+		http://www.springframework.org/schema/beans/spring-beans-4.2.xsd 
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.2.xsd 
+		http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.2.xsd 
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.2.xsd ">
+		
+	<!-- 配置读取db.properties -->	
+	<context:property-placeholder location="classpath:db.properties"/>
+	<bean name="dataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
+		<property name="driverClass" value="${jdbc.driverClass}"></property>
+		<property name="jdbcUrl" value="${jdbc.jdbcUrl}"/>
+		<property name="user" value="${jdbc.user}"></property>
+		<property name="password" value="${jdbc.password}"></property>
+	</bean>
+	<!-- 配置SessionFactory第一种方式不推荐 
+	<bean name="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<property name="configLocation" value="hibernate.cfg.xml"></property>
+	</bean>-->
+	<!-- 配置SessionFactory第二种方式 -->
+	<bean name="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
+		<!-- 将连接池注入到SessionFactory，hibernate会通过连接池获取连接 -->
+		<property name="dataSource" ref="dataSource"></property>
+		<property name="hibernateProperties">
+			<props>
+				<!-- 必选 （配置连接池时不需要下面四个）-->
+				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
+				<!--<prop key="hibernate.connection.driver_class">com.mysql.jdbc.Driver</prop>
+				<prop key="hibernate.connection.url">jdbc:mysql:///ssh</prop>
+				<prop key="hibernate.connection.username">root</prop> 
+				<prop key="hibernate.connection.password">dapeng</prop>-->
+				<!-- 可选 -->
+				<prop key="hibernate.show_sql" >true</prop>
+				<prop key="hibernate.format_sql" >true</prop>
+				<prop key="hibernate.hbm2ddl.auto" >update</prop>
+			</props>
+		</property>
+		<property name="mappingDirectoryLocations" value="classpath:com/dapeng/domain"></property>
+	</bean>
+	<!-- 配置action -->
+	<bean name="userAction" class="com.dapeng.web.action.UserAction" scope="prototype">
+		<property name="us" ref="userService"></property>
+	</bean>
+	<bean name="customerAction" class="com.dapeng.web.action.CustomerAction" scope="prototype">
+		<property name="cs" ref="customerService"></property>
+	</bean>
+	<!-- 配置service -->
+	<bean name="userService" class="com.dapeng.service.UserServiceImpl">
+		<property name="ud" ref="userDao"></property>
+	</bean>
+	<bean name="customerService" class="com.dapeng.service.impl.CustomerServiceImpl">
+		<property name="cd" ref="customerDao"></property>
+	</bean>
+	<!-- 配置dao -->
+	<bean name="userDao" class="com.dapeng.dao.impl.UserDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean name="customerDao" class="com.dapeng.dao.impl.CustomerDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+</beans>
+
