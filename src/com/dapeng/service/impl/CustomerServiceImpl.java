@@ -1,13 +1,12 @@
 package com.dapeng.service.impl;
 
-import java.util.List;
-
-import org.hibernate.criterion.DetachedCriteria;
-
 import com.dapeng.dao.CustomerDao;
 import com.dapeng.domain.Customer;
 import com.dapeng.service.CustomerService;
 import com.dapeng.utils.PageBean;
+import org.hibernate.criterion.DetachedCriteria;
+
+import java.util.List;
 
 public class CustomerServiceImpl implements CustomerService {
 	
@@ -19,7 +18,7 @@ public class CustomerServiceImpl implements CustomerService {
 		//2.封装PageBean对象
 		PageBean pb = new PageBean(currentPage, totalCount, pageSize);
 		//3.获得指定页码的数据
-		List<Customer> list = cd.getCustomerList(dc, pb.getStartIndex(), pb.getPageSize());
+		List<Customer> list = cd.getPageList(dc, pb.getStartIndex(), pb.getPageSize());
 		pb.setList(list);
 		return pb;
 	}

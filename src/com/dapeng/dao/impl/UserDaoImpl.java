@@ -1,21 +1,14 @@
 package com.dapeng.dao.impl;
 
-import java.util.List;
-
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.criterion.DetachedCriteria;
-import org.hibernate.criterion.Restrictions;
-import org.springframework.orm.hibernate5.HibernateCallback;
-import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
-
 import com.dapeng.dao.UserDao;
 import com.dapeng.domain.User;
+import org.hibernate.criterion.DetachedCriteria;
+import org.hibernate.criterion.Restrictions;
 
-public class UserDaoImpl extends HibernateDaoSupport implements UserDao{
+import java.util.List;
 
-	@Override
+public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao{
+
 	public User getByUserCode(String userCode) {
 		DetachedCriteria dc = DetachedCriteria.forClass(User.class);
 		dc.add(Restrictions.eq("user_code", userCode));

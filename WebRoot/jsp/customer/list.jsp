@@ -5,29 +5,26 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<TITLE>客户列表</TITLE> 
+<TITLE>客户列表</TITLE>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <LINK href="${pageContext.request.contextPath }/css/Style.css" type=text/css rel=stylesheet>
 <LINK href="${pageContext.request.contextPath }/css/Manage.css" type=text/css
 	rel=stylesheet>
 <script type="text/javascript" src="${pageContext.request.contextPath }/js/jquery-1.4.4.min.js"></script>
 <SCRIPT language=javascript>
-	function to_page(page){
-		if(page){
-			$("#page").val(page);
-		}
-		document.customerForm.submit();
-		
-	}
+	function changePage(pageNum) {
+			$('#currentPageInput').val(pageNum);
+			$('#pageForm').submit();
+    };
+	function changePageSize(pageSizeNum) {
+			$('#pageSizeInput').val(pageSizeNum);
+			$('#pageForm').submit();
+    };
 </SCRIPT>
 
 <META content="MSHTML 6.00.2900.3492" name=GENERATOR>
 </HEAD>
 <BODY>
-	<FORM id="customerForm" name="customerForm"
-		action="${pageContext.request.contextPath }/CustomerAction_list"
-		method=post>
-		
 		<TABLE cellSpacing=0 cellPadding=0 width="98%" border=0>
 			<TBODY>
 				<TR>
@@ -59,21 +56,26 @@
 							<TBODY>
 								<TR>
 									<TD height=25>
+										<FORM id="pageForm" name="customerForm" action="${pageContext.request.contextPath }/CustomerAction_list" method=post>
+											<!--设置隐藏域-->
+											<input type="hidden" id="currentPageInput" name="currentPage" value="<s:property value="#pageBean.currentPage" />" />
+											<input type="hidden" id="pageSizeInput" name="pageSize" value="<s:property value="#pageBean.pageSize" />" />
 										<TABLE cellSpacing=0 cellPadding=2 border=0>
 											<TBODY>
 												<TR>
 													<TD>客户名称：</TD>
 													<TD><INPUT class=textbox id=sChannel2
 														style="WIDTH: 80px" maxLength=50 name="cust_name" value="${param.cust_name}"></TD>
-													
+
 													<TD><INPUT class=button id=sButton2 type=submit
 														value=" 筛选 " name=sButton2></TD>
 												</TR>
 											</TBODY>
 										</TABLE>
+										</FORM>
 									</TD>
 								</TR>
-							    
+
 								<TR>
 									<TD>
 										<TABLE id=grid
@@ -91,7 +93,7 @@
 													<TD>操作</TD>
 												</TR>
 												<s:iterator value="#pageBean.list" var="cust" >
-												<TR 		
+												<TR
 													style="FONT-WEIGHT: normal; FONT-STYLE: normal; BACKGROUND-COLOR: white; TEXT-DECORATION: none">
 													<TD>
 														<s:property value="#cust.cust_name" />
@@ -123,27 +125,26 @@
 										</TABLE>
 									</TD>
 								</TR>
-								
+
 								<TR>
 									<TD><SPAN id=pagelink>
 											<DIV
 												style="LINE-HEIGHT: 20px; HEIGHT: 20px; TEXT-ALIGN: right">
-												共[<B>${total}</B>]条记录,[<B>${totalPage}</B>]页
+												共[<B><s:property value="#pageBean.totalCount" /> </B>]条记录,[<B><s:property value="#pageBean.totalPage" /> </B>]页
 												,每页显示
-												<select name="pageSize">
-												
-												<option value="15" <c:if test="${pageSize==1 }">selected</c:if>>1</option>
-												<option value="30" <c:if test="${pageSize==30 }">selected</c:if>>30</option>
+												<select name="pageSize" onchange="changePageSize($('#pageSizeSelected option:selected').val())" id="pageSizeSelected">
+													<option value="3" <s:property value="#pageBean.pageSize==3?'selected':''"></s:property> >3</option>
+													<option value="5" <s:property value="#pageBean.pageSize==5?'selected':''"></s:property> >5</option>
 												</select>
 												条
-												[<A href="javascript:to_page(${page-1})">前一页</A>]
-												<B>${page}</B>
-												[<A href="javascript:to_page(${page+1})">后一页</A>] 
+												[<A href="javascript:void(0)" onclick="changePage(<s:property value="#pageBean.currentPage-1" />)">前一页</A>]
+												<B><s:property value="#pageBean.currentPage" /> </B>
+												[<A href="javascript:void(0)" onclick="changePage(<s:property value="#pageBean.currentPage+1" />)">后一页</A>]
 												到
-												<input type="text" size="3" id="page" name="page" />
+												<input type="text" size="3" id="page" name="page" value="<s:property value="#pageBean.currentPage" /> "/>
 												页
-												
-												<input type="button" value="Go" onclick="to_page()"/>
+
+												<input type="button" value="Go" onclick="changePage($('#page').val())"/>
 											</DIV>
 									</SPAN></TD>
 								</TR>
@@ -167,6 +168,5 @@
 				</TR>
 			</TBODY>
 		</TABLE>
-	</FORM>
 </BODY>
 </HTML>

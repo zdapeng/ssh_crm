@@ -1,8 +1,8 @@
-package com.dapeng.service;
+package com.dapeng.service.impl;
 
 import com.dapeng.dao.UserDao;
 import com.dapeng.domain.User;
-import com.dapeng.service.impl.UserService;
+import com.dapeng.service.UserService;
 
 public class UserServiceImpl implements UserService{
 	private UserDao ud;

@@ -50,7 +50,7 @@
 		<property name="cs" ref="customerService"></property>
 	</bean>
 	<!-- 配置service -->
-	<bean name="userService" class="com.dapeng.service.UserServiceImpl">
+	<bean name="userService" class="com.dapeng.service.impl.UserServiceImpl">
 		<property name="ud" ref="userDao"></property>
 	</bean>
 	<bean name="customerService" class="com.dapeng.service.impl.CustomerServiceImpl">

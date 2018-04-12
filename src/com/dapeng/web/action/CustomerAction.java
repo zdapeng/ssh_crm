@@ -20,6 +20,7 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 	public String list() throws Exception {
 		//0.封装离线查询对象dc
 		DetachedCriteria dc = DetachedCriteria.forClass(Customer.class);
+		System.out.println(customer.getCust_name());
 		if(StringUtils.isNotBlank(customer.getCust_name())) {
 			dc.add(Restrictions.like("cust_name", "%"+customer.getCust_name()+"%"));
 		}
@@ -39,7 +40,35 @@ public class CustomerAction extends ActionSupport implements ModelDriven<Custome
 
 	@Override
 	public Customer getModel() {
-		return null;
+		return customer;
 	}
-	
+
+	public CustomerService getCs() {
+		return cs;
+	}
+
+	public Customer getCustomer() {
+		return customer;
+	}
+
+	public void setCustomer(Customer customer) {
+		this.customer = customer;
+	}
+
+	public Integer getCurrentPage() {
+		return currentPage;
+
+	}
+
+	public void setCurrentPage(Integer currentPage) {
+		this.currentPage = currentPage;
+	}
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
 }
