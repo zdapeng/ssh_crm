@@ -22,6 +22,12 @@ public class CustomerServiceImpl implements CustomerService {
 		pb.setList(list);
 		return pb;
 	}
+
+	@Override
+	public void save(Customer customer) {
+		cd.save(customer);
+	}
+
 	public CustomerDao getCd() {
 		return cd;
 	}

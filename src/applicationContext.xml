@@ -18,10 +18,6 @@
 		<property name="user" value="${jdbc.user}"></property>
 		<property name="password" value="${jdbc.password}"></property>
 	</bean>
-	<!-- 配置SessionFactory第一种方式不推荐 
-	<bean name="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
-		<property name="configLocation" value="hibernate.cfg.xml"></property>
-	</bean>-->
 	<!-- 配置SessionFactory第二种方式 -->
 	<bean name="sessionFactory" class="org.springframework.orm.hibernate5.LocalSessionFactoryBean">
 		<!-- 将连接池注入到SessionFactory，hibernate会通过连接池获取连接 -->
@@ -42,12 +38,38 @@
 		</property>
 		<property name="mappingDirectoryLocations" value="classpath:com/dapeng/domain"></property>
 	</bean>
+	<!--事务管理配置-->
+	<bean name="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<!--配置通知-->
+	<tx:advice id="txAdvice" transaction-manager="transactionManager">
+		<tx:attributes>
+			<tx:method name="save*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="persist*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="update*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="modify*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="delete*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="remove*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false"/>
+			<tx:method name="get*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="find*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="true"/>
+			<tx:method name="*" isolation="REPEATABLE_READ" propagation="REQUIRED" read-only="false"/>
+		</tx:attributes>
+	</tx:advice>
+	<!--配置将通知织入目标对象-->
+	<aop:config>
+		<aop:pointcut id="txPc" expression="execution(* com.dapeng.service.impl.*ServiceImpl.*(..))"></aop:pointcut>
+		<aop:advisor advice-ref="txAdvice" pointcut-ref="txPc"></aop:advisor>
+	</aop:config>
 	<!-- 配置action -->
 	<bean name="userAction" class="com.dapeng.web.action.UserAction" scope="prototype">
 		<property name="us" ref="userService"></property>
 	</bean>
 	<bean name="customerAction" class="com.dapeng.web.action.CustomerAction" scope="prototype">
 		<property name="cs" ref="customerService"></property>
+	</bean>
+	<bean name="baseDictAction" class="com.dapeng.web.action.BaseDictAction" scope="prototype">
+		<property name="baseDictService" ref="baseDictService"></property>
 	</bean>
 	<!-- 配置service -->
 	<bean name="userService" class="com.dapeng.service.impl.UserServiceImpl">
@@ -56,11 +78,17 @@
 	<bean name="customerService" class="com.dapeng.service.impl.CustomerServiceImpl">
 		<property name="cd" ref="customerDao"></property>
 	</bean>
+	<bean name="baseDictService" class="com.dapeng.service.impl.BaseDictServiceImpl">
+		<property name="baseDictDao" ref="baseDictDao"></property>
+	</bean>
 	<!-- 配置dao -->
 	<bean name="userDao" class="com.dapeng.dao.impl.UserDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 	<bean name="customerDao" class="com.dapeng.dao.impl.CustomerDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory"></property>
+	</bean>
+	<bean name="baseDictDao" class="com.dapeng.dao.impl.BaseDictDaoImpl">
 		<property name="sessionFactory" ref="sessionFactory"></property>
 	</bean>
 </beans>

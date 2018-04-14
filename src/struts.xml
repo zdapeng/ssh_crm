@@ -15,6 +15,14 @@
 	<package name="customer" namespace="/" extends="struts-default">
 		<action name="CustomerAction_*" class="customerAction" method="{1}">
 			<result name="custList">/jsp/customer/list.jsp</result>
+			<result name="toList" type="redirectAction">
+				<param name="namespace">/</param>
+				<param name="actionName">CustomerAction_list</param>
+			</result>
+		</action>
+	</package>
+	<package name="baseDict" namespace="/" extends="struts-default">
+		<action name="BaseDictAction" class="baseDictAction" method="execute">
 		</action>
 	</package>
 </struts>
