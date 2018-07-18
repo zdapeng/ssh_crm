@@ -8,7 +8,7 @@ import org.hibernate.criterion.Restrictions;
 import java.util.List;
 
 public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao{
-
+	@Override
 	public User getByUserCode(String userCode) {
 		DetachedCriteria dc = DetachedCriteria.forClass(User.class);
 		dc.add(Restrictions.eq("user_code", userCode));
