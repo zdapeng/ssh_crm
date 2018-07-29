@@ -36,5 +36,6 @@ public class UserDaoImpl extends BaseDaoImpl<User> implements UserDao{
 			
 		});
 	}*/
+	//我是dev分支，我增加了一个文件
 	
 }

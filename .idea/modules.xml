@@ -2,7 +2,6 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/../Demo/Demo.iml" filepath="$PROJECT_DIR$/../Demo/Demo.iml" />
       <module fileurl="file://$PROJECT_DIR$/ssh_crm.iml" filepath="$PROJECT_DIR$/ssh_crm.iml" />
     </modules>
   </component>
